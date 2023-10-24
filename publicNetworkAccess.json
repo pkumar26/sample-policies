@@ -1,0 +1,43 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Web/sites"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "Microsoft.Web/sites/publicNetworkAccess",
+              "exists": "false"
+            },
+            {
+              "field": "Microsoft.Web/sites/publicNetworkAccess",
+              "notEquals": "Enabled"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]"
+    }
+  },
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy"
+      },
+      "allowedValues": [
+        "Audit",
+        "Disabled",
+        "Deny"
+      ],
+      "defaultValue": "Audit"
+    }
+  }
+}
