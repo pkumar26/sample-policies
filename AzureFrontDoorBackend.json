@@ -1,0 +1,43 @@
+{
+  "mode": "All",
+  "policyRule": {
+    "if": {
+      "allOf": [
+        {
+          "field": "type",
+          "equals": "Microsoft.Web/sites/config"
+        },
+        {
+          "anyOf": [
+            {
+              "field": "Microsoft.Web/sites/config/ipSecurityRestrictions[*].ipAddress",
+              "exists": "false"
+            },
+            {
+              "field": "Microsoft.Web/sites/config/ipSecurityRestrictions[*].ipAddress",
+              "notEquals": "AzureFrontDoor.Backend"
+            }
+          ]
+        }
+      ]
+    },
+    "then": {
+      "effect": "[parameters('effect')]"
+    }
+  },
+  "parameters": {
+    "effect": {
+      "type": "String",
+      "metadata": {
+        "displayName": "Effect",
+        "description": "Enable or disable the execution of the policy"
+      },
+      "allowedValues": [
+        "Audit",
+        "Disabled",
+        "Deny"
+      ],
+      "defaultValue": "Audit"
+    }
+  }
+}
